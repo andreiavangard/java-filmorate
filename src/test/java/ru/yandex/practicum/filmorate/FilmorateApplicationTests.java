@@ -69,7 +69,7 @@ class FilmorateApplicationTests {
         Film film = Film.builder()
                 .name("Фильм")
                 .description("Описание фильма")
-                .releaseDate(LocalDate.of(1984, 12, 28))
+                .releaseDate(LocalDate.of(1884, 12, 28))
                 .duration(120)
                 .build();
         assertThrows(ValidationException.class, () -> {
