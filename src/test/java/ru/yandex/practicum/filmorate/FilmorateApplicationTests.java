@@ -155,7 +155,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-        //Логин не может содержать пробелы
+    //Логин не может содержать пробелы
     void loginCannotContainSpaces() {
         User user = User.builder()
                 .name("Иванов иван")
@@ -170,7 +170,7 @@ class FilmorateApplicationTests {
     }
 
     @Test
-        //Дата рождения не может быть в будущем
+    //Дата рождения не может быть в будущем
     void dateOfBirthCannotBeInTheFuture() {
         LocalDate futureDate = LocalDate.now().plusMonths(1);
 
