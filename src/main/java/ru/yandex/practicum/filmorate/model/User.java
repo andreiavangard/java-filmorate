@@ -33,7 +33,7 @@ public class User {
     private LocalDate birthday;
     @Builder.Default
     private Set<Long> friends = new HashSet<>();
-    
+
     public void setFriend(Long userId) {
         if (!friends.contains(userId)) {
             friends.add(userId);
