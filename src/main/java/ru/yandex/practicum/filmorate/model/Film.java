@@ -4,14 +4,20 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.yandex.practicum.filmorate.validate.MinimumDate;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Film {
     private Long id;
     @NotBlank(message = "Название  должно быть указано")
@@ -24,4 +30,23 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "Длительность должна быть положительной")
     private int duration;
+    @Builder.Default
+    private Set<Long> likes = new HashSet<>();
+
+    public Long getCountLikes() {
+        return (long) likes.size();
+    }
+
+    public void setLike(Long userId) {
+        if (!likes.contains(userId)) {
+            likes.add(userId);
+        }
+    }
+
+    public void deleteLike(Long userId) {
+        if (!likes.contains(userId)) {
+            likes.remove(userId);
+        }
+    }
+
 }
