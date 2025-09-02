@@ -41,7 +41,7 @@ public class User {
     }
 
     public Set<Long> getIdsFriends() {
-        return friends;
+        return Set.copyOf(friends);
     }
 
     public void deleteFriend(Long userId) {

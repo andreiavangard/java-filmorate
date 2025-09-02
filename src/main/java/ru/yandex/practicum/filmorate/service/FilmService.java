@@ -1,43 +1,25 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.Optional;
+import java.util.*;
 
-@Service
-public class FilmService {
-    private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
+public interface FilmService {
 
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
+    Film setLike(Long filmId, Long userId);
 
-    public Film setLike(Long filmId, Long userId) {
-        checkFilling(filmId, userId);
-        return filmStorage.setLike(filmId, userId);
-    }
+    Film deleteLike(Long filmId, Long userId);
 
-    public Film deleteLike(Long filmId, Long userId) {
-        checkFilling(filmId, userId);
-        return filmStorage.deleteLike(filmId, userId);
-    }
+    Collection<Film> findAll();
 
-    private void checkFilling(Long filmId, Long userId) {
-        Optional film = filmStorage.findById(filmId);
-        if (film.isEmpty()) {
-            throw new NotFoundException(String.format("Фильм с id %s не найден", filmId));
-        }
+    Collection<Film> findPopular(int count);
 
-        Optional user = userStorage.findById(userId);
-        if (user.isEmpty()) {
-            throw new NotFoundException(String.format("Пользователь с id %s не найден", userId));
-        }
-    }
+    Film create(Film film);
+
+    Film update(Film newFilm);
+
+    Optional<Film> findById(Long id);
+
+    Map<Long, Film> getMapFilms();
 
 }
