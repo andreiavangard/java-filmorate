@@ -17,14 +17,12 @@ public interface UserService {
 
     Collection<User> findCommonFriends(Long userId, Long otherId);
 
-    Collection<User> findAll();
+    Map<Long, User> findAll();
 
     Optional<User> findById(Long id);
 
     User create(User user);
 
     User update(User newUser);
-
-    Map<Long, User> getMapUsers();
 
 }

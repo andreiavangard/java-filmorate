@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class FilmServiceControl implements FilmService {
+public class FilmServiceImpl implements FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 
-    public FilmServiceControl(FilmStorage filmStorage, UserStorage userStorage) {
+    public FilmServiceImpl(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
         this.userStorage = userStorage;
     }
@@ -30,7 +30,7 @@ public class FilmServiceControl implements FilmService {
         return filmStorage.deleteLike(filmId, userId);
     }
 
-    public Collection<Film> findAll() {
+    public Map<Long, Film> findAll() {
         return filmStorage.findAll();
     }
 
@@ -60,10 +60,6 @@ public class FilmServiceControl implements FilmService {
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь с id %s не найден", userId));
         }
-    }
-
-    public Map<Long, Film> getMapFilms() {
-        return filmStorage.getMapFilms();
     }
 
 }

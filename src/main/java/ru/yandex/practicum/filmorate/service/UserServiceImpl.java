@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class UserServiceControl implements UserService {
+public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
-    public UserServiceControl(UserStorage userStorage) {
+    public UserServiceImpl(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
@@ -50,7 +50,7 @@ public class UserServiceControl implements UserService {
                 .toList();
     }
 
-    public Collection<User> findAll() {
+    public Map<Long, User> findAll() {
         return userStorage.findAll();
     }
 
@@ -64,10 +64,6 @@ public class UserServiceControl implements UserService {
 
     public User update(User newUser) {
         return userStorage.update(newUser);
-    }
-
-    public Map<Long, User> getMapUsers() {
-        return userStorage.getMapUsers();
     }
 
 }

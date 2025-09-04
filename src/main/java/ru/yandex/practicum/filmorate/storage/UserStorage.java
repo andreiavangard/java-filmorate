@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface UserStorage {
-    public Collection<User> findAll();
+    public Map<Long, User> findAll();
 
     User create(User user);
 
@@ -20,7 +20,5 @@ public interface UserStorage {
     Collection<User> findFriends(Long userId);
 
     User deleteFriend(Long userId, Long friendId);
-
-    Map<Long, User> getMapUsers();
 
 }

@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping
     public Collection<User> findAll() {
         log.debug("Получили список пользователей");
-        return userService.findAll();
+        return userService.findAll().values();
     }
 
     @GetMapping("/{id}")
@@ -58,7 +58,7 @@ public class UserController {
 
     @PutMapping
     public User update(@Valid @RequestBody User newUser) {
-        if (userService.getMapUsers().containsKey(newUser.getId())) {
+        if (userService.findAll().containsKey(newUser.getId())) {
             log.debug("Начало обновления пользователя {}", newUser);
             return userService.update(newUser);
         }

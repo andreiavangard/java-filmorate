@@ -11,8 +11,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Long, Film> films = new HashMap<>();
     private final Comparator<Film> filmLikesComparator = Comparator.comparing(Film::getCountLikes);
 
-    public Collection<Film> findAll() {
-        return films.values();
+    public Map<Long, Film> findAll() {
+        return Map.copyOf(films);
     }
 
     public Optional<Film> findById(Long id) {
@@ -52,10 +52,6 @@ public class InMemoryFilmStorage implements FilmStorage {
         Film film = films.get(filmId);
         film.deleteLike(userId);
         return film;
-    }
-
-    public Map<Long, Film> getMapFilms() {
-        return Map.copyOf(films);
     }
 
 }

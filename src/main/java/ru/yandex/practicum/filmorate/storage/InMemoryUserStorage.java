@@ -10,8 +10,8 @@ import java.util.*;
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
 
-    public Collection<User> findAll() {
-        return users.values();
+    public Map<Long, User> findAll() {
+        return Map.copyOf(users);
     }
 
     public Optional<User> findById(Long id) {
@@ -60,10 +60,6 @@ public class InMemoryUserStorage implements UserStorage {
         user.deleteFriend(friendId);
         userFriend.deleteFriend(userId);
         return user;
-    }
-
-    public Map<Long, User> getMapUsers() {
-        return Map.copyOf(users);
     }
 
 }

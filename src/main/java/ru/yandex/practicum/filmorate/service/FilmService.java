@@ -10,7 +10,7 @@ public interface FilmService {
 
     Film deleteLike(Long filmId, Long userId);
 
-    Collection<Film> findAll();
+    Map<Long, Film> findAll();
 
     Collection<Film> findPopular(int count);
 
@@ -19,7 +19,5 @@ public interface FilmService {
     Film update(Film newFilm);
 
     Optional<Film> findById(Long id);
-
-    Map<Long, Film> getMapFilms();
 
 }
