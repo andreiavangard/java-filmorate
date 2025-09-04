@@ -5,13 +5,26 @@ import ru.yandex.practicum.filmorate.model.Service;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
 
     public Map<Long, User> findAll() {
-        return Map.copyOf(users);
+        //такое сложное решение потому как
+        //1. Было получено замечание Лучше возвращать копию, чтобы защитить оригинальную коллекцию от модификации
+        //то есть return users нельзя
+        //2.при return Map.copyOf(films); не сохраняется сотрировка в users и падают тесты
+        //по логике прикладного решения нам сотрировка не нужна и return Map.copyOf(users) должно работать корректно
+        //но для тестов сохраняем сортрировку, замена new HashMap<>() на LinkedHashMap, treeMap не помогла
+        return users.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
     }
 
     public Optional<User> findById(Long id) {

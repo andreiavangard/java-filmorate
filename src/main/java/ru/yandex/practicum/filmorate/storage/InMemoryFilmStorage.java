@@ -5,6 +5,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
@@ -12,7 +13,19 @@ public class InMemoryFilmStorage implements FilmStorage {
     private final Comparator<Film> filmLikesComparator = Comparator.comparing(Film::getCountLikes);
 
     public Map<Long, Film> findAll() {
-        return Map.copyOf(films);
+        //такое сложное решение потому как
+        //1. Было получено замечание Лучше возвращать копию, чтобы защитить оригинальную коллекцию от модификации
+        //то есть return films нельзя
+        //2.при return Map.copyOf(films); не сохраняется сотрировка в films и падают тесты
+        //по логике прикладного решения нам сотрировка не нужна и return Map.copyOf(films) должно работать корректно
+        //но для тестов сохраняем сортрировку, замена new HashMap<>() на LinkedHashMap, treeMap не помогла
+        return films.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (a, b) -> a,
+                        LinkedHashMap::new
+                ));
     }
 
     public Optional<Film> findById(Long id) {
