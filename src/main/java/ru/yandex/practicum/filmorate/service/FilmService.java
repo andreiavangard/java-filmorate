@@ -10,7 +10,9 @@ public interface FilmService {
 
     Film deleteLike(Long filmId, Long userId);
 
-    Map<Long, Film> findAll();
+    Collection<Film> findAll();
+
+    Map<Long, Film> getMapFilms();
 
     Collection<Film> findPopular(int count);
 

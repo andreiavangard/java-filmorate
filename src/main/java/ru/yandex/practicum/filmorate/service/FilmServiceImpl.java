@@ -30,8 +30,12 @@ public class FilmServiceImpl implements FilmService {
         return filmStorage.deleteLike(filmId, userId);
     }
 
-    public Map<Long, Film> findAll() {
+    public Collection<Film> findAll() {
         return filmStorage.findAll();
+    }
+
+    public Map<Long, Film> getMapFilms() {
+        return filmStorage.getMapFilms();
     }
 
     public Optional<Film> findById(Long id) {

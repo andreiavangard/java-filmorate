@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Service;
 import ru.yandex.practicum.filmorate.model.User;
 
@@ -11,20 +12,14 @@ import java.util.stream.Collectors;
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
 
-    public Map<Long, User> findAll() {
-        //такое сложное решение потому как
-        //1. Было получено замечание Лучше возвращать копию, чтобы защитить оригинальную коллекцию от модификации
-        //то есть return users нельзя
-        //2.при return Map.copyOf(films); не сохраняется сотрировка в users и падают тесты
-        //по логике прикладного решения нам сотрировка не нужна и return Map.copyOf(users) должно работать корректно
-        //но для тестов сохраняем сортрировку, замена new HashMap<>() на LinkedHashMap, treeMap не помогла
-        return users.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (a, b) -> a,
-                        LinkedHashMap::new
-                ));
+    //возвращает коллекцию пользователей, служит для организации внешней логики приложения, содержит только пользователей
+    public Collection<User> findAll() {
+        return users.values();
+    }
+
+    //возвращает map пользователей, служит для технических целей, когда нужна коллекция с id пользователя и самим пользователем
+    public Map<Long, User> getMapUsers() {
+        return Map.copyOf(users);
     }
 
     public Optional<User> findById(Long id) {

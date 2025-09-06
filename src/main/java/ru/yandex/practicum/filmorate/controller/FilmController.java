@@ -24,7 +24,7 @@ public class FilmController {
     @GetMapping
     public Collection<Film> findAll() {
         log.debug("Получили список пользователей");
-        return filmService.findAll().values();
+        return filmService.findAll();
     }
 
     @GetMapping("/{id}")
@@ -47,7 +47,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@Valid @RequestBody Film newFilm) {
-        if (filmService.findAll().containsKey(newFilm.getId())) {
+        if (filmService.getMapFilms().containsKey(newFilm.getId())) {
             log.debug("Начало обновления фильма {}", newFilm);
             return filmService.update(newFilm);
         }
