@@ -17,7 +17,9 @@ public interface UserService {
 
     Collection<User> findCommonFriends(Long userId, Long otherId);
 
-    Map<Long, User> findAll();
+    Collection<User> findAll();
+
+    Map<Long, User> getMapUsers();
 
     Optional<User> findById(Long id);
 

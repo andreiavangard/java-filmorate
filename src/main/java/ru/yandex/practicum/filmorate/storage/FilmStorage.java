@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface FilmStorage {
 
-    Map<Long, Film> findAll();
+    Collection<Film> findAll();
+
+    Map<Long, Film> getMapFilms();
 
     Film create(Film film);
 

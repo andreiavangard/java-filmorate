@@ -50,8 +50,12 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
-    public Map<Long, User> findAll() {
+    public Collection<User> findAll() {
         return userStorage.findAll();
+    }
+
+    public Map<Long, User> getMapUsers() {
+        return userStorage.getMapUsers();
     }
 
     public Optional<User> findById(Long id) {
