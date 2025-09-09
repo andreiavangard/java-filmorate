@@ -17,16 +17,16 @@ public class FriendsRepository extends BaseRepository<Friends> {
         super(jdbc, mapper);
     }
 
-    public boolean addFriend(Long user_id, Long friend_id) {
-        return update(ADD_QUERY, user_id, friend_id);
+    public boolean addFriend(Long userId, Long friendId) {
+        return update(ADD_QUERY, userId, friendId);
     }
 
-    public boolean deleteFriend(long user_id, long friend_id) {
-        return delete(DELETE_QUERY, user_id, friend_id);
+    public boolean deleteFriend(long userId, long friendId) {
+        return delete(DELETE_QUERY, userId, friendId);
     }
 
-    public Collection<Friends> findFriends(long user_id) {
-        return findMany(GET_QUERY, user_id);
+    public Collection<Friends> findFriends(long userId) {
+        return findMany(GET_QUERY, userId);
     }
 
 }

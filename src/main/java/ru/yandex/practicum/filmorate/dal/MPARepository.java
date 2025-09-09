@@ -21,8 +21,8 @@ public class MPARepository extends BaseRepository<MPA> {
         return findMany(FIND_ALL_QUERY);
     }
 
-    public Optional<MPA> findById(Integer genre_id) {
-        return findOne(FIND_QUERY, genre_id);
+    public Optional<MPA> findById(Integer genreId) {
+        return findOne(FIND_QUERY, genreId);
     }
 
 }

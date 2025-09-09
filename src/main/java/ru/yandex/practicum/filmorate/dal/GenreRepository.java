@@ -13,11 +13,9 @@ public class GenreRepository extends BaseRepository<Genre> {
     private static final String FIND_ALL_QUERY = "SELECT * FROM genres";
     private static final String FIND_QUERY = "SELECT * FROM genres WHERE genre_id = ?";
     private static final String FIND_FILM_GENRES_QUERY =
-            """
-                    SELECT * FROM genres AS g 
-                    INNER JOIN genresfilms AS gf ON g.genre_id = gf.genre_id
-                    WHERE film_id = ?
-                    """;
+                    "SELECT * FROM genres AS g"
+                    +"INNER JOIN genresfilms AS gf ON g.genre_id = gf.genre_id"
+                    +"WHERE film_id = ?";
 
     public GenreRepository(JdbcTemplate jdbc, RowMapper<Genre> mapper) {
         super(jdbc, mapper);
@@ -27,12 +25,12 @@ public class GenreRepository extends BaseRepository<Genre> {
         return findMany(FIND_ALL_QUERY);
     }
 
-    public Optional<Genre> findById(Integer genre_id) {
-        return findOne(FIND_QUERY, genre_id);
+    public Optional<Genre> findById(Integer genreId) {
+        return findOne(FIND_QUERY, genreId);
     }
 
-    public List<Genre> findByIdFilm(Long film_id) {
-        return findMany(FIND_FILM_GENRES_QUERY, film_id);
+    public List<Genre> findByIdFilm(Long filmId) {
+        return findMany(FIND_FILM_GENRES_QUERY, filmId);
     }
 
 }

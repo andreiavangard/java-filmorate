@@ -24,10 +24,10 @@ public class GenreServiceIml implements GenreService {
         return genreStorage.findAll();
     }
 
-    public Optional<Genre> findById(Integer genre_id) {
-        Optional genre = genreStorage.findById(genre_id);
+    public Optional<Genre> findById(Integer genreId) {
+        Optional genre = genreStorage.findById(genreId);
         if (genre.isEmpty()) {
-            throw new NotFoundException("Жанра с id=" + genre_id + " не найдено");
+            throw new NotFoundException("Жанра с id=" + genreId + " не найдено");
         }
         return genre;
     }

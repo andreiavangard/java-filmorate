@@ -19,12 +19,12 @@ public class LikeRepository extends BaseRepository<Long> {
         super(jdbc, longMapper);
     }
 
-    public void setLike(long film_id, long user_id) {
-        insertWithoutId(SET_QUERY, film_id, user_id);
+    public void setLike(long filmId, long userId) {
+        insertWithoutId(SET_QUERY, filmId, userId);
     }
 
-    public boolean deleteLike(long film_id, long user_id) {
-        return delete(DELETE_QUERY, film_id, user_id);
+    public boolean deleteLike(long filmId, long userId) {
+        return delete(DELETE_QUERY, filmId, userId);
     }
 
     public List<Long> getFilmLikes(long filmId) {

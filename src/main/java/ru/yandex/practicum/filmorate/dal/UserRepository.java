@@ -27,13 +27,13 @@ public class UserRepository extends BaseRepository<User> {
     }
 
     public Long create(CreateUserDto createUserDto) {
-        Long user_id = insert(INSERT_QUERY,
+        Long userId = insert(INSERT_QUERY,
                 createUserDto.getEmail(),
                 createUserDto.getLogin(),
                 createUserDto.getName(),
                 Date.valueOf(createUserDto.getBirthday()));
 
-        return user_id;
+        return userId;
     }
 
     public boolean update(User user) {

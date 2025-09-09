@@ -12,50 +12,44 @@ import java.util.Optional;
 @Repository
 public class FilmRepository extends BaseRepository<Film> {
     private static final String FIND_ALL_QUERY =
-            """
-                        SELECT 
-                        f.film_id, 
-                        f.name, 
-                        f.description, 
-                        f.releaseDate, 
-                        f.duration, 
-                        m.mpa_id, 
-                        m.name AS mpa_name
-                    FROM films AS f 
-                     LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id
-                    """;
+                        "SELECT"
+                        +"f.film_id,"
+                        +"f.name,"
+                        +"f.description,"
+                        +"f.releaseDate,"
+                        +"f.duration,"
+                        +"m.mpa_id, "
+                        +"m.name AS mpa_name"
+                        +"FROM films AS f "
+                        +"LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id";
     private static final String FIND_BY_ID_QUERY =
-            """
-                    SELECT  
-                        f.film_id, 
-                        f.name, 
-                        f.description, 
-                        f.releaseDate, 
-                        f.duration, 
-                        m.mpa_id, 
-                        m.name AS mpa_name
-                    FROM films AS f
-                    LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id
-                    WHERE f.film_id = ?
-                    """;
+                        "SELECT"
+                        +"f.film_id,"
+                        +"f.name,"
+                        +"f.description,"
+                        +"f.releaseDate,"
+                        +"f.duration,"
+                        +"m.mpa_id,"
+                        +"m.name AS mpa_name"
+                    +"FROM films AS f"
+                    +"LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id"
+                    +"WHERE f.film_id = ?";
     private static final String GET_POPULAR =
-            """ 
-                    SELECT
-                        f.film_id, 
-                        f.name, 
-                        f.description, 
-                        f.releaseDate, 
-                        f.duration, 
-                        m.mpa_id, 
-                        m.name AS mpa_name,
-                        COUNT(l.user_id) as countLikes
-                    FROM films f 
-                        LEFT JOIN likes AS l ON f.film_id = l.film_id
-                        LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id
-                        GROUP BY f.film_id, f.name, f.description, f.releaseDate, f.duration, m.mpa_id, m.name
-                        ORDER BY COUNT(l.user_id) DESC
-                        LIMIT ?
-                    """;
+                     "SELECT"
+                        +"f.film_id,"
+                        +"f.name,"
+                        +"f.description,"
+                        +"f.releaseDate,"
+                        +"f.duration,"
+                        +"m.mpa_id,"
+                        +"m.name AS mpa_name,"
+                        +"COUNT(l.user_id) as countLikes"
+                    +"FROM films f"
+                        +"LEFT JOIN likes AS l ON f.film_id = l.film_id"
+                        +"LEFT JOIN mpa AS m ON f.mpa_id = m.mpa_id"
+                        +"GROUP BY f.film_id, f.name, f.description, f.releaseDate, f.duration, m.mpa_id, m.name"
+                        +"ORDER BY COUNT(l.user_id) DESC"
+                        +"LIMIT ?";
     private static final String INSERT_QUERY = "INSERT INTO films (name, description, releaseDate, duration, mpa_id)  VALUES (?,?,?,?,?)";
     private static final String UPDATE_QUERY = "UPDATE films SET name = ?, description = ?, releaseDate = ?, duration = ?, mpa_id = ? WHERE film_id = ?";
     private static final String DELETE_QUERY = "DELETE FROM films WHERE film_id = ?";
@@ -71,8 +65,8 @@ public class FilmRepository extends BaseRepository<Film> {
         return findMany(FIND_ALL_QUERY);
     }
 
-    public Optional<Film> findById(Long film_id) {
-        return findOne(FIND_BY_ID_QUERY, film_id);
+    public Optional<Film> findById(Long filmId) {
+        return findOne(FIND_BY_ID_QUERY, filmId);
     }
 
     public Film create(Film film) {
@@ -96,20 +90,20 @@ public class FilmRepository extends BaseRepository<Film> {
                 film.getId());
     }
 
-    public boolean delete(Long film_id) {
-        return delete(DELETE_QUERY, film_id);
+    public boolean delete(Long filmId) {
+        return delete(DELETE_QUERY, filmId);
     }
 
     public Collection<Film> getPopular(int count) {
         return findMany(GET_POPULAR, count);
     }
 
-    public boolean addGenre(long film_id, long genre_id) {
-        return update(ADD_GENERES_QUERY, film_id, genre_id);
+    public boolean addGenre(long film_id, long genreId) {
+        return update(ADD_GENERES_QUERY, film_id, genreId);
     }
 
-    public boolean deleteGenre(Long film_id) {
-        return delete(DELETE_GENERES_QUERY, film_id);
+    public boolean deleteGenre(Long filmId) {
+        return delete(DELETE_GENERES_QUERY, filmId);
     }
 
 }

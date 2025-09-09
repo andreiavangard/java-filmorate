@@ -39,8 +39,8 @@ public class FilmDbStorage implements FilmStorage {
         }
     }
 
-    public Optional<Film> findById(Long film_id) {
-        Optional<Film> film = filmRepository.findById(film_id);
+    public Optional<Film> findById(Long filmId) {
+        Optional<Film> film = filmRepository.findById(filmId);
         if (!film.isEmpty()) {
             setLikeFilm(film.get());
             setGenreFilm(film.get());

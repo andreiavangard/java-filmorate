@@ -26,9 +26,9 @@ public class UserDbStorage implements UserStorage {
 
     public User create(User user) {
         CreateUserDto createUserDto = UserMapper.createUserDtoFromUser(user);
-        Long user_id = userRepository.create(createUserDto);
+        Long userId = userRepository.create(createUserDto);
         User newUser = UserMapper.userFromCreateUserDto(createUserDto);
-        newUser.setId(user_id);
+        newUser.setId(userId);
         return newUser;
     }
 
@@ -44,16 +44,16 @@ public class UserDbStorage implements UserStorage {
         return userRepository.findById(id);
     }
 
-    public boolean addFriend(Long user_id, Long friend_id) {
-        return friendsRepository.addFriend(user_id, friend_id);
+    public boolean addFriend(Long userId, Long friendId) {
+        return friendsRepository.addFriend(userId, friendId);
     }
 
-    public boolean deleteFriend(Long user_id, Long friend_id) {
-        return friendsRepository.deleteFriend(user_id, friend_id);
+    public boolean deleteFriend(Long userId, Long friendId) {
+        return friendsRepository.deleteFriend(userId, friendId);
     }
 
-    public Collection<User> findFriends(Long user_id) {
-        return friendsRepository.findFriends(user_id)
+    public Collection<User> findFriends(Long userId) {
+        return friendsRepository.findFriends(userId)
                 .stream()
                 .map(Friends::getFriendId)
                 .map(userRepository::findById)

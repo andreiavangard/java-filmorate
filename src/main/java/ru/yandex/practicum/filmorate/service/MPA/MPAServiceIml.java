@@ -24,10 +24,10 @@ public class MPAServiceIml implements MPAService {
         return mpaStorage.findAll();
     }
 
-    public Optional<MPA> findById(Integer genre_id) {
-        Optional mpa = mpaStorage.findById(genre_id);
+    public Optional<MPA> findById(Integer genreId) {
+        Optional mpa = mpaStorage.findById(genreId);
         if (mpa.isEmpty()) {
-            throw new NotFoundException("Рейтинга с id=" + genre_id + " не найдено");
+            throw new NotFoundException("Рейтинга с id=" + genreId + " не найдено");
         }
         return mpa;
     }
