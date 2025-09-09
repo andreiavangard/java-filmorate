@@ -1,16 +1,13 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.Film;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 public interface FilmStorage {
 
     Collection<Film> findAll();
-
-    Map<Long, Film> getMapFilms();
 
     Film create(Film film);
 
@@ -20,8 +17,8 @@ public interface FilmStorage {
 
     Collection<Film> findPopular(int count);
 
-    Film setLike(Long filmId, Long userId);
+    void setLike(Long filmId, Long userId);
 
-    Film deleteLike(Long filmId, Long userId);
+    boolean deleteLike(Long filmId, Long userId);
 
 }

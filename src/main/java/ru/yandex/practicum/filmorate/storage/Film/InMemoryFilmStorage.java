@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.Film;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -6,19 +6,13 @@ import ru.yandex.practicum.filmorate.model.Service;
 
 import java.util.*;
 
-@Component
+@Component("InMemoryFilmStorage")
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Long, Film> films = new HashMap<>();
     private final Comparator<Film> filmLikesComparator = Comparator.comparing(Film::getCountLikes);
 
-    //возвращает коллекцию фильмов, служит для организации внешней логики приложения, содержит только фильмы
     public Collection<Film> findAll() {
         return films.values();
-    }
-
-    //возвращает map фильмов, служит для технических целей, когда нужна коллекция с id фильма и самим фильмом
-    public Map<Long, Film> getMapFilms() {
-        return Map.copyOf(films);
     }
 
     public Optional<Film> findById(Long id) {
@@ -48,16 +42,15 @@ public class InMemoryFilmStorage implements FilmStorage {
         return oldFilm;
     }
 
-    public Film setLike(Long filmId, Long userId) {
+    public void setLike(Long filmId, Long userId) {
         Film film = films.get(filmId);
         film.setLike(userId);
-        return film;
     }
 
-    public Film deleteLike(Long filmId, Long userId) {
+    public boolean deleteLike(Long filmId, Long userId) {
         Film film = films.get(filmId);
         film.deleteLike(userId);
-        return film;
+        return true;
     }
 
 }

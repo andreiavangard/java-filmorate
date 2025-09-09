@@ -1,23 +1,27 @@
-package ru.yandex.practicum.filmorate.service;
+package ru.yandex.practicum.filmorate.service.User;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.User.UserStorage;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
 
-    public UserServiceImpl(UserStorage userStorage) {
+    @Autowired
+    public UserServiceImpl(@Qualifier("UserDBStorage") UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
-    public User addFriend(Long userId, Long friendId) {
+    public boolean addFriend(Long userId, Long friendId) {
         checkFilling(userId);
         checkFilling(friendId);
         return userStorage.addFriend(userId, friendId);
@@ -28,7 +32,7 @@ public class UserServiceImpl implements UserService {
         return userStorage.findFriends(userId);
     }
 
-    public User deleteFriend(Long userId, Long friendId) {
+    public boolean deleteFriend(Long userId, Long friendId) {
         checkFilling(userId);
         checkFilling(friendId);
         return userStorage.deleteFriend(userId, friendId);
@@ -54,12 +58,12 @@ public class UserServiceImpl implements UserService {
         return userStorage.findAll();
     }
 
-    public Map<Long, User> getMapUsers() {
-        return userStorage.getMapUsers();
-    }
-
     public Optional<User> findById(Long id) {
-        return userStorage.findById(id);
+        Optional<User> user = userStorage.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Пользователя с id=" + id + " не найдено");
+        }
+        return user;
     }
 
     public User create(User user) {
@@ -69,5 +73,6 @@ public class UserServiceImpl implements UserService {
     public User update(User newUser) {
         return userStorage.update(newUser);
     }
+
 
 }

@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.service;
+package ru.yandex.practicum.filmorate.service.Film;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -6,13 +6,11 @@ import java.util.*;
 
 public interface FilmService {
 
-    Film setLike(Long filmId, Long userId);
+    void setLike(Long filmId, Long userId);
 
-    Film deleteLike(Long filmId, Long userId);
+    boolean deleteLike(Long filmId, Long userId);
 
     Collection<Film> findAll();
-
-    Map<Long, Film> getMapFilms();
 
     Collection<Film> findPopular(int count);
 

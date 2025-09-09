@@ -32,6 +32,8 @@ public class Film {
     private int duration;
     @Builder.Default
     private Set<Long> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
+    private MPA mpa;
 
     public Long getCountLikes() {
         return (long) likes.size();

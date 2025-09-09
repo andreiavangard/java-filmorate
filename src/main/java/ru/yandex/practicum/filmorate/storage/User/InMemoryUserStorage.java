@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.User;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Service;
@@ -6,18 +6,12 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 
-@Component
+@Component("InMemoryUserStorage")
 public class InMemoryUserStorage implements UserStorage {
     private final Map<Long, User> users = new HashMap<>();
 
-    //возвращает коллекцию пользователей, служит для организации внешней логики приложения, содержит только пользователей
     public Collection<User> findAll() {
         return users.values();
-    }
-
-    //возвращает map пользователей, служит для технических целей, когда нужна коллекция с id пользователя и самим пользователем
-    public Map<Long, User> getMapUsers() {
-        return Map.copyOf(users);
     }
 
     public Optional<User> findById(Long id) {
@@ -41,14 +35,14 @@ public class InMemoryUserStorage implements UserStorage {
         return oldUser;
     }
 
-    public User addFriend(Long userId, Long friendId) {
+    public boolean addFriend(Long userId, Long friendId) {
         User user = users.get(userId);
         User userFriend = users.get(friendId);
 
         user.setFriend(friendId);
         userFriend.setFriend(userId);
 
-        return user;
+        return true;
     }
 
     public Collection<User> findFriends(Long userId) {
@@ -60,12 +54,12 @@ public class InMemoryUserStorage implements UserStorage {
                 .toList();
     }
 
-    public User deleteFriend(Long userId, Long friendId) {
+    public boolean deleteFriend(Long userId, Long friendId) {
         User user = users.get(userId);
         User userFriend = users.get(friendId);
         user.deleteFriend(friendId);
         userFriend.deleteFriend(userId);
-        return user;
+        return true;
     }
 
 }
