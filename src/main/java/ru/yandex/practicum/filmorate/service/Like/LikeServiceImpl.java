@@ -24,26 +24,26 @@ public class LikeServiceImpl implements LikeService {
         this.userService = userService;
     }
 
-    public void setLike(long film_id, long user_id) {
-        checkFilling(film_id, user_id);
-        likeStorage.setLike(film_id, user_id);
+    public void setLike(long filmId, long userId) {
+        checkFilling(filmId, userId);
+        likeStorage.setLike(filmId, userId);
     }
 
     ;
 
-    public boolean deleteLike(long film_id, long user_id) {
-        checkFilling(film_id, user_id);
-        return likeStorage.deleteLike(film_id, user_id);
+    public boolean deleteLike(long filmId, long userId) {
+        checkFilling(filmId, userId);
+        return likeStorage.deleteLike(filmId, userId);
     }
 
     ;
 
-    private void checkFilling(long film_id, long user_id) {
-        filmService.findById(film_id)
-                .orElseThrow(() -> new NotFoundException("Фильм c id " + film_id + " не найден"));
+    private void checkFilling(long filmId, long userId) {
+        filmService.findById(filmId)
+                .orElseThrow(() -> new NotFoundException("Фильм c id " + filmId + " не найден"));
 
-        userService.findById(user_id)
-                .orElseThrow(() -> new NotFoundException("Пользователя c id " + user_id + " не найдено"));
+        userService.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователя c id " + userId + " не найдено"));
     }
 
 }

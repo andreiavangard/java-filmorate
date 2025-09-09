@@ -12,17 +12,13 @@ import java.util.List;
 public class LikeDBStorage implements LikeStorage {
     private final LikeRepository likeRepository;
 
-    public void setLike(long film_id, long user_id) {
-        likeRepository.setLike(film_id, user_id);
-    }
+    public void setLike(long filmId, long userId) {
+        likeRepository.setLike(filmId, userId);
+    };
 
-    ;
-
-    public boolean deleteLike(long film_id, long user_id) {
-        return likeRepository.deleteLike(film_id, user_id);
-    }
-
-    ;
+    public boolean deleteLike(long filmId, long userId) {
+        return likeRepository.deleteLike(filmId, userId);
+    };
 
     public List<Long> getFilmLikes(long filmId) {
         return likeRepository.getFilmLikes(filmId);
