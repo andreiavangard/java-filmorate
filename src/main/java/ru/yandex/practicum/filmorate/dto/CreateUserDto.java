@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
-import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
