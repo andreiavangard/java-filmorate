@@ -70,13 +70,13 @@ public class FilmRepository extends BaseRepository<Film> {
     }
 
     public Film create(Film film) {
-        Long film_id = insert(INSERT_QUERY,
+        Long filmId = insert(INSERT_QUERY,
                 film.getName(),
                 film.getDescription(),
                 Date.valueOf(film.getReleaseDate()),
                 film.getDuration(),
                 film.getMpa().getId());
-        film.setId(film_id);
+        film.setId(filmId);
         return film;
     }
 
@@ -98,8 +98,8 @@ public class FilmRepository extends BaseRepository<Film> {
         return findMany(GET_POPULAR, count);
     }
 
-    public boolean addGenre(long film_id, long genreId) {
-        return update(ADD_GENERES_QUERY, film_id, genreId);
+    public boolean addGenre(long filmId, long genreId) {
+        return update(ADD_GENERES_QUERY, filmId, genreId);
     }
 
     public boolean deleteGenre(Long filmId) {
