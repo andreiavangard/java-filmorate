@@ -14,11 +14,11 @@ public class LikeDBStorage implements LikeStorage {
 
     public void setLike(long filmId, long userId) {
         likeRepository.setLike(filmId, userId);
-    };
+    }
 
     public boolean deleteLike(long filmId, long userId) {
         return likeRepository.deleteLike(filmId, userId);
-    };
+    }
 
     public List<Long> getFilmLikes(long filmId) {
         return likeRepository.getFilmLikes(filmId);
