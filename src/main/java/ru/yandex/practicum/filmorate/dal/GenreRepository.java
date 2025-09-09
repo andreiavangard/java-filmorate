@@ -13,8 +13,8 @@ public class GenreRepository extends BaseRepository<Genre> {
     private static final String FIND_ALL_QUERY = "SELECT * FROM genres";
     private static final String FIND_QUERY = "SELECT * FROM genres WHERE genre_id = ?";
     private static final String FIND_FILM_GENRES_QUERY =
-            "SELECT * FROM genres AS g"
-                    + "INNER JOIN genresfilms AS gf ON g.genre_id = gf.genre_id"
+            "SELECT * FROM genres AS g "
+                    + "INNER JOIN genresfilms AS gf ON g.genre_id = gf.genre_id "
                     + "WHERE film_id = ?";
 
     public GenreRepository(JdbcTemplate jdbc, RowMapper<Genre> mapper) {
