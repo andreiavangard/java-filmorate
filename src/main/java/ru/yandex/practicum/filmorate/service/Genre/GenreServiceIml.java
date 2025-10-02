@@ -1,31 +1,28 @@
 package ru.yandex.practicum.filmorate.service.Genre;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.Genre.GenreStorage;
+import ru.yandex.practicum.filmorate.repository.GenreRepository;
+
 
 import java.util.Collection;
 import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class GenreServiceIml implements GenreService {
-    private final GenreStorage genreStorage;
-
-    @Autowired
-    public GenreServiceIml(GenreStorage genreStorage) {
-        this.genreStorage = genreStorage;
-    }
+    private final GenreRepository genreRepository;
 
     public Collection<Genre> findAll() {
-        return genreStorage.findAll();
+        return genreRepository.findAll();
     }
 
     public Optional<Genre> findById(Integer genreId) {
-        Optional genre = genreStorage.findById(genreId);
+        Optional genre = genreRepository.findById(genreId);
         if (genre.isEmpty()) {
             throw new NotFoundException("Жанра с id=" + genreId + " не найдено");
         }

@@ -1,69 +1,60 @@
 package ru.yandex.practicum.filmorate.service.Film;
 
 import jakarta.validation.ValidationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.Genre.GenreService;
-import ru.yandex.practicum.filmorate.service.MPA.MPAService;
-import ru.yandex.practicum.filmorate.storage.Film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.User.UserStorage;
+import ru.yandex.practicum.filmorate.repository.*;
 import ru.yandex.practicum.filmorate.model.Genre;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FilmServiceImpl implements FilmService {
-    private final FilmStorage filmStorage;
-    private final UserStorage userStorage;
-    private final GenreService genreService;
-    private final MPAService mpaService;
-
-    @Autowired
-    public FilmServiceImpl(@Qualifier("FilmDbStorage") FilmStorage filmStorage,
-                           @Qualifier("UserDBStorage") UserStorage userStorage,
-                           GenreService genreService,
-                           MPAService mpaService) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-        this.genreService = genreService;
-        this.mpaService = mpaService;
-    }
+    private final FilmRepository filmRepository;
+    private final UserRepository userRepository;
+    private final GenreRepository genreRepository;
+    private final MPARepository mpaRepository;
+    private final LikeRepository likeRepository;
 
     public void setLike(Long filmId, Long userId) {
         checkFilling(filmId, userId);
-        filmStorage.setLike(filmId, userId);
+        likeRepository.setLike(filmId, userId);
     }
 
     public boolean deleteLike(Long filmId, Long userId) {
         checkFilling(filmId, userId);
-        return filmStorage.deleteLike(filmId, userId);
+        return likeRepository.deleteLike(filmId, userId);
     }
 
     public Collection<Film> findAll() {
-        return filmStorage.findAll();
+        return filmRepository.findAll();
     }
 
     public Optional<Film> findById(Long id) {
-        return filmStorage.findById(id);
+        return filmRepository.findById(id);
     }
 
     public Collection<Film> findPopular(int count) {
-        return filmStorage.findPopular(count);
+        Collection<Film> films = filmRepository.getPopular(count);
+        for (Film film : films) {
+            setLikeFilm(film);
+            setGenreFilm(film);
+        }
+        return films;
     }
 
     public Film create(Film film) {
         Set<Integer> genreIds = getSetGenreId(film);
         checkGenres(genreIds);
         checkMPA(film.getMpa().getId());
-        return filmStorage.create(film);
+        return filmRepository.create(film);
     }
 
     public Film update(Film newFilm) {
@@ -71,7 +62,7 @@ public class FilmServiceImpl implements FilmService {
             throw new ValidationException("Не указан id фильма");
         }
 
-        Optional<Film> film = filmStorage.findById(newFilm.getId());
+        Optional<Film> film = filmRepository.findById(newFilm.getId());
         if (film.isEmpty()) {
             throw new NotFoundException("Фильм с id=" + newFilm.getId() + " не найден");
         }
@@ -80,31 +71,37 @@ public class FilmServiceImpl implements FilmService {
         checkGenres(genreIds);
         checkMPA(newFilm.getMpa().getId());
 
-        return filmStorage.update(newFilm);
+        if (filmRepository.update(newFilm)) {
+            updateGenreLikeFilm(newFilm);
+            return newFilm;
+        } else {
+            throw new InternalServerException("Не удалось обновить фильм");
+        }
     }
 
     private void checkFilling(Long filmId, Long userId) {
-        Optional film = filmStorage.findById(filmId);
+        Optional film = filmRepository.findById(filmId);
         if (film.isEmpty()) {
             throw new NotFoundException(String.format("Фильм с id %s не найден", filmId));
         }
 
-        Optional user = userStorage.findById(userId);
+        Optional user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь с id %s не найден", userId));
         }
     }
 
     private void checkMPA(Integer mpaId) {
-        mpaService.findById(mpaId)
+        mpaRepository.findById(mpaId)
                 .orElseThrow(() -> new NotFoundException("Рейтинг с id=" + mpaId + " не существует"));
     }
 
-    private void checkGenres(Set<Integer> genreIds) {
-        for (Integer genreId : genreIds) {
-            if (genreService.findById(genreId).isEmpty()) {
-                throw new NotFoundException("Жанра с id=" + genreId + " не существует");
-            }
+    private void checkGenres(Set<Integer> genres) {
+        Set<Integer> generesInRepo = genreRepository.findAll().stream()
+                .map(Genre::getId)
+                .collect(Collectors.toSet());
+        if (!genres.isEmpty() && !generesInRepo.containsAll(genres)) {
+            throw new NotFoundException("Переданы несуществующие жанры" + genres + "---" + generesInRepo);
         }
     }
 
@@ -112,6 +109,30 @@ public class FilmServiceImpl implements FilmService {
         return film.getGenres().stream()
                 .map(Genre::getId)
                 .collect(Collectors.toSet());
+    }
+
+    private void setLikeFilm(Film film) {
+        Long filmId = film.getId();
+        List<Long> likes = likeRepository.getFilmLikes(filmId);
+        Set<Long> likesSet = new HashSet<>(likes);
+        film.setLikes(likesSet);
+    }
+
+    private void setGenreFilm(Film film) {
+        Long filmId = film.getId();
+        List<Genre> genresFilm = genreRepository.findByIdFilm(filmId);
+        // Сортируем и сохраняем порядок для тестов
+        Set<Genre> genresFilmSet = genresFilm.stream()
+                .sorted(Comparator.comparing(Genre::getId))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        film.setGenres(genresFilmSet);
+    }
+
+    private void updateGenreLikeFilm(Film film) {
+        filmRepository.deleteGenre(film.getId());
+        filmRepository.addGenres(film.getId(), film.getGenres());
+        likeRepository.addtLikes(film.getId(), film.getLikes());
     }
 
 }

@@ -7,7 +7,9 @@ import java.util.Optional;
 
 
 public interface MPAService {
+
     Collection<MPA> findAll();
 
     Optional<MPA> findById(Integer id);
+
 }
