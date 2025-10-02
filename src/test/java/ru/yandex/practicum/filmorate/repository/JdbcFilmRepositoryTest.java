@@ -21,14 +21,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import({JdbcFilmRepository.class, FilmRowMapper.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("JdbcFilmRepository")
 public class JdbcFilmRepositoryTest {
     public static final long TEST_FILM_ID_1 = 1L;
     public static final long TEST_FILM_ID_2 = 2L;
     private final JdbcFilmRepository filmRepository;
 
-    static Film getTestFilm1(){
+    static Film getTestFilm1() {
         Film film = new Film();
         film.setId(TEST_FILM_ID_1);
         film.setName("film1");
@@ -43,7 +43,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен находить фильм по ид")
-    public void test_should_find_film_by_ID(){
+    public void test_should_find_film_by_ID() {
         Film testFilm1 = getTestFilm1();
         Optional<Film> filmOptional = filmRepository.findById(testFilm1.getId());
 
@@ -58,7 +58,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить список фильмов")
-    public void test_should_get_list_films(){
+    public void test_should_get_list_films() {
         Collection<Film> filmList = filmRepository.findAll();
 
         assertThat(filmList)
@@ -70,7 +70,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен создать фильм")
-    public void test_should_create_film(){
+    public void test_should_create_film() {
         Film film = new Film();
         film.setName("film3");
         film.setDescription("descriptionFilm3");
@@ -95,10 +95,10 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен обновить фильм")
-    public void test_should_update_film(){
+    public void test_should_update_film() {
         Optional<Film> filmOptional = filmRepository.findById(TEST_FILM_ID_1);
         Film film = filmOptional.get();
-        film.setName(film.getName()+"_");//.setLogin(user.getLogin()+"_");
+        film.setName(film.getName() + "_");//.setLogin(user.getLogin()+"_");
         film.setDescription(film.getDescription());//.setName(user.getName()+"_");
         boolean success = filmRepository.update(film);
         assertThat(success).isTrue();
@@ -113,7 +113,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен удалить фильм")
-    public void test_should_delete_film(){
+    public void test_should_delete_film() {
         Film film = new Film();
         film.setName("film4");
         film.setDescription("descriptionFilm4");
@@ -136,7 +136,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить список популярных фильмов")
-    public void test_should_get_list_popular_films(){
+    public void test_should_get_list_popular_films() {
         Collection<Film> filmList = filmRepository.getPopular(1);
 
         assertThat(filmList)
@@ -148,13 +148,13 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен добавить фильму жанр")
-    public void test_should_create_genre_film(){
+    public void test_should_create_genre_film() {
 
         Set<Genre> genres = new HashSet<>();
         Genre genre = new Genre();
         genre.setId(1);
         genres.add(genre);
-        filmRepository.addGenres(1,genres);
+        filmRepository.addGenres(1, genres);
         Optional<Film> filmOptional = filmRepository.findById(1L);
         Set<Genre> filmGenre = filmOptional.get().getGenres();
 
@@ -170,7 +170,7 @@ public class JdbcFilmRepositoryTest {
 
     @Test
     @DisplayName("Тест должен удалить у  фильма жанр")
-    public void test_should_delete_genre_film(){
+    public void test_should_delete_genre_film() {
         boolean success = filmRepository.deleteGenre(2L);
         assertThat(success).isTrue();
         Optional<Film> filmOptional = filmRepository.findById(2L);

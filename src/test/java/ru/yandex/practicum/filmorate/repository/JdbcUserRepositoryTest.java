@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import({JdbcUserRepository.class, UserRowMapper.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("JdbcUserRepository")
 public class JdbcUserRepositoryTest {
     public static final long TEST_USER_ID_1 = 1L;
     public static final long TEST_USER_ID_2 = 2L;
     private final JdbcUserRepository userRepository;
 
-    static User getTestUser1(){
+    static User getTestUser1() {
         User user = new User();
         user.setId(TEST_USER_ID_1);
         user.setEmail("email@mail.ru");
@@ -37,7 +37,7 @@ public class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("Тест должен находить пользователя по ид")
-    public void test_should_find_user_by_ID(){
+    public void test_should_find_user_by_ID() {
         User testUser1 = getTestUser1();
         Optional<User> userOptional = userRepository.findById(testUser1.getId());
 
@@ -52,7 +52,7 @@ public class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить список пользователей")
-    public void test_should_get_list_users(){
+    public void test_should_get_list_users() {
         Collection<User> userList = userRepository.findAll();
 
         assertThat(userList)
@@ -65,7 +65,7 @@ public class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("Тест должен создать пользователя")
-    public void test_should_create_user(){
+    public void test_should_create_user() {
         User user = new User();
         user.setEmail("email@mail.ru");
         user.setLogin("user3");
@@ -88,11 +88,11 @@ public class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("Тест должен обновить пользователя")
-    public void test_should_update_user(){
+    public void test_should_update_user() {
         Optional<User> userOptional = userRepository.findById(TEST_USER_ID_2);
         User user = userOptional.get();
-        user.setLogin(user.getLogin()+"_");
-        user.setName(user.getName()+"_");
+        user.setLogin(user.getLogin() + "_");
+        user.setName(user.getName() + "_");
         boolean success = userRepository.update(user);
         assertThat(success).isTrue();
         Optional<User> updatedUserOptional = userRepository.findById(TEST_USER_ID_2);

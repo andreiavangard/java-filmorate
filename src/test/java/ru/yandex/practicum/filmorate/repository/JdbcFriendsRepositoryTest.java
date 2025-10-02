@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import({JdbcFriendsRepository.class, FriendsRowMapper.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("JdbcFriendsRepository")
 public class JdbcFriendsRepositoryTest {
     public static final long TEST_USER_ID_1 = 1L;
@@ -25,10 +25,10 @@ public class JdbcFriendsRepositoryTest {
 
     @Test
     @DisplayName("Тест должен создать друга")
-    public void test_should_create_user(){
+    public void test_should_create_user() {
         boolean success = jdbcFriendsRepository.addFriend(TEST_USER_ID_1, TEST_USER_ID_2);
         assertThat(success).isTrue();
-        Collection<Friends> friends= jdbcFriendsRepository.findFriends(TEST_USER_ID_1);
+        Collection<Friends> friends = jdbcFriendsRepository.findFriends(TEST_USER_ID_1);
         assertThat(friends)
                 .isNotNull()
                 .isNotEmpty()
@@ -38,16 +38,16 @@ public class JdbcFriendsRepositoryTest {
 
     @Test
     @DisplayName("Тест должен удалить друга")
-    public void test_should_delete_user(){
+    public void test_should_delete_user() {
         boolean success = jdbcFriendsRepository.deleteFriend(TEST_USER_ID_2, TEST_USER_ID_1);
         assertThat(success).isTrue();
-        Collection<Friends> friends= jdbcFriendsRepository.findFriends(TEST_USER_ID_1);
+        Collection<Friends> friends = jdbcFriendsRepository.findFriends(TEST_USER_ID_1);
         assertThat(friends).isEmpty();
     }
 
     @Test
     @DisplayName("Тест должен вывести список друзей")
-    public void test_should_list_friends(){
+    public void test_should_list_friends() {
         Collection<Friends> friends = jdbcFriendsRepository.findFriends(TEST_USER_ID_3);
         assertThat(friends)
                 .isNotNull()

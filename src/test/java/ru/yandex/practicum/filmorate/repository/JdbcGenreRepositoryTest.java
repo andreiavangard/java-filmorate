@@ -17,14 +17,14 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @JdbcTest
 @Import({JdbcGenreRepository.class, GenreRowMapper.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("JdbcGenreRepository")
 public class JdbcGenreRepositoryTest {
     private final JdbcGenreRepository jdbcGenreRepository;
 
     @Test
     @DisplayName("Тест должен получить жанр")
-    public void test_must_get_genre(){
+    public void test_must_get_genre() {
         Optional<Genre> genre = jdbcGenreRepository.findById(1);
         assertThat(genre)
                 .isPresent()
@@ -38,7 +38,7 @@ public class JdbcGenreRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить все жанры")
-    public void test_must_all_genres(){
+    public void test_must_all_genres() {
         List<Genre> genres = jdbcGenreRepository.findAll();
         assertThat(genres)
                 .isNotNull()
@@ -56,7 +56,7 @@ public class JdbcGenreRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить жанры по фильму")
-    public void  test_should__genres_of_film(){
+    public void test_should__genres_of_film() {
         List<Genre> genres = jdbcGenreRepository.findByIdFilm(2L);
         assertThat(genres)
                 .isNotNull()

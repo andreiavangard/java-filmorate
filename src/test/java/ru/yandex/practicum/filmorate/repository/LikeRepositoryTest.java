@@ -15,14 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
 @Import({JdbcLikeRepository.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("LikeRepository")
 public class LikeRepositoryTest {
     private final JdbcLikeRepository jdbcLikeRepository;
 
     @Test
     @DisplayName("Тест должен установить лайк")
-    public void test_should_set_like(){
+    public void test_should_set_like() {
         jdbcLikeRepository.setLike(3L, 1L);
         List<Long> likes = jdbcLikeRepository.getFilmLikes(1);
         assertThat(likes)
@@ -34,7 +34,7 @@ public class LikeRepositoryTest {
 
     @Test
     @DisplayName("Тест должен установить лайки фильму")
-    public void test_should_set_likes(){
+    public void test_should_set_likes() {
         Set<Long> likes = new HashSet<>();
         likes.add(1L);
         likes.add(2L);
@@ -51,7 +51,7 @@ public class LikeRepositoryTest {
 
     @Test
     @DisplayName("Тест должен удалять лайки фильму")
-    public void test_should_delete_likes(){
+    public void test_should_delete_likes() {
         boolean success = jdbcLikeRepository.deleteLike(3L, 2L);
         assertThat(success).isTrue();
         List<Long> likesRepo = jdbcLikeRepository.getFilmLikes(3L);
@@ -62,7 +62,7 @@ public class LikeRepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить лайки для фильма фильму")
-    public void  test_should_get_likes_for_film(){
+    public void test_should_get_likes_for_film() {
         List<Long> likes = jdbcLikeRepository.getFilmLikes(2L);
         assertThat(likes)
                 .isNotNull()

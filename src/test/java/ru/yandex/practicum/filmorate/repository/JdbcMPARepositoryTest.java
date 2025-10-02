@@ -17,15 +17,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.tuple;
 
 @JdbcTest
 @Import({JdbcMPARepository.class, MPARowMapper.class})
-@RequiredArgsConstructor(onConstructor_=@Autowired)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("JdbcMPARepository")
 public class JdbcMPARepositoryTest {
     private final JdbcMPARepository jdbcMPARepository;
 
     @Test
     @DisplayName("Тест должен получить рейтинг по ид")
-    public void test_must_be_rated_according_to_id(){
-        jdbcMPARepository.findById( 1);
+    public void test_must_be_rated_according_to_id() {
+        jdbcMPARepository.findById(1);
         Optional<MPA> mpa = jdbcMPARepository.findById(1);
         assertThat(mpa)
                 .isPresent()
@@ -39,7 +39,7 @@ public class JdbcMPARepositoryTest {
 
     @Test
     @DisplayName("Тест должен получить все рейтинги")
-    public void test_must_receive_all_ratings(){
+    public void test_must_receive_all_ratings() {
         List<MPA> listMpa = jdbcMPARepository.findAll();
         assertThat(listMpa)
                 .isNotNull()
@@ -53,7 +53,6 @@ public class JdbcMPARepositoryTest {
                         tuple(5, "NC-17", "Лицам до 18 лет просмотр запрещён")
                 );
     }
-
 
 
 }
