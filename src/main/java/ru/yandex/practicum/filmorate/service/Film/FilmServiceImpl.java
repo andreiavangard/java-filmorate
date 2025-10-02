@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.InternalServerException;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.repository.*;
 import ru.yandex.practicum.filmorate.model.Genre;
 
@@ -80,12 +81,12 @@ public class FilmServiceImpl implements FilmService {
     }
 
     private void checkFilling(Long filmId, Long userId) {
-        Optional film = filmRepository.findById(filmId);
+        Optional<Film> film = filmRepository.findById(filmId);
         if (film.isEmpty()) {
             throw new NotFoundException(String.format("Фильм с id %s не найден", filmId));
         }
 
-        Optional user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new NotFoundException(String.format("Пользователь с id %s не найден", userId));
         }
