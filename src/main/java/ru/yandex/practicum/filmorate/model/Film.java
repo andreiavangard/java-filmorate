@@ -31,28 +31,11 @@ public class Film {
     @Positive(message = "Длительность должна быть положительной")
     private int duration;
     @Builder.Default
-    private Set<Long> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
     private MPA mpa;
 
     public void addGenre(Genre genre) {
         genres.add(genre);
-    }
-
-    public Long getCountLikes() {
-        return (long) likes.size();
-    }
-
-    public void setLike(Long userId) {
-        if (!likes.contains(userId)) {
-            likes.add(userId);
-        }
-    }
-
-    public void deleteLike(Long userId) {
-        if (!likes.contains(userId)) {
-            likes.remove(userId);
-        }
     }
 
 }

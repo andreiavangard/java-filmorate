@@ -43,12 +43,7 @@ public class FilmServiceImpl implements FilmService {
     }
 
     public Collection<Film> findPopular(int count) {
-        Collection<Film> films = filmRepository.getPopular(count);
-        for (Film film : films) {
-            setLikeFilm(film);
-            setGenreFilm(film);
-        }
-        return films;
+        return filmRepository.getPopular(count);
     }
 
     public Film create(Film film) {
@@ -73,7 +68,7 @@ public class FilmServiceImpl implements FilmService {
         checkMPA(newFilm.getMpa().getId());
 
         if (filmRepository.update(newFilm)) {
-            updateGenreLikeFilm(newFilm);
+            updateGenreFilm(newFilm);
             return newFilm;
         } else {
             throw new InternalServerException("Не удалось обновить фильм");
@@ -115,8 +110,6 @@ public class FilmServiceImpl implements FilmService {
     private void setLikeFilm(Film film) {
         Long filmId = film.getId();
         List<Long> likes = likeRepository.getFilmLikes(filmId);
-        Set<Long> likesSet = new HashSet<>(likes);
-        film.setLikes(likesSet);
     }
 
     private void setGenreFilm(Film film) {
@@ -130,10 +123,9 @@ public class FilmServiceImpl implements FilmService {
         film.setGenres(genresFilmSet);
     }
 
-    private void updateGenreLikeFilm(Film film) {
+    private void updateGenreFilm(Film film) {
         filmRepository.deleteGenre(film.getId());
         filmRepository.addGenres(film.getId(), film.getGenres());
-        likeRepository.addtLikes(film.getId(), film.getLikes());
     }
 
 }
