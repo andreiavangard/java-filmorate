@@ -10,7 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -32,20 +33,20 @@ public class User {
     @Past(message = "День рождения должен быть в прошлом")
     private LocalDate birthday;
     @Builder.Default
-    private Set<Long> friends = new HashSet<>();
+    private Map<Long, Boolean> friends = new HashMap<>();
 
     public void setFriend(Long userId) {
-        if (!friends.contains(userId)) {
-            friends.add(userId);
+        if (!friends.containsKey(userId)) {
+            friends.put(userId, false);
         }
     }
 
     public Set<Long> getIdsFriends() {
-        return Set.copyOf(friends);
+        return Map.copyOf(friends).keySet();
     }
 
     public void deleteFriend(Long userId) {
-        if (friends.contains(userId)) {
+        if (friends.containsKey(userId)) {
             friends.remove(userId);
         }
     }

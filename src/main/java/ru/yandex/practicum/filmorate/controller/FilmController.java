@@ -2,11 +2,10 @@ package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.service.Film.FilmService;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -17,7 +16,8 @@ import java.util.Optional;
 public class FilmController {
     private final FilmService filmService;
 
-    public FilmController(FilmStorage filmStorage, FilmService filmService) {
+    @Autowired
+    public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
 
@@ -47,28 +47,24 @@ public class FilmController {
 
     @PutMapping
     public Film update(@Valid @RequestBody Film newFilm) {
-        if (filmService.getMapFilms().containsKey(newFilm.getId())) {
-            log.debug("Начало обновления фильма {}", newFilm);
-            return filmService.update(newFilm);
-        }
-        log.error("Фильм с id = {} не найден", newFilm.getId());
-        throw new NotFoundException("Фильм с id = " + newFilm.getId() + " не найден");
+        log.debug("Начало обновления фильма {}", newFilm);
+        return filmService.update(newFilm);
     }
 
     @PutMapping("{id}/like/{userId}")
-    public Film setLike(
+    public void setLike(
             @PathVariable Long id,
             @PathVariable Long userId
     ) {
-        return filmService.setLike(id, userId);
+        filmService.setLike(id, userId);
     }
 
     @DeleteMapping("{id}/like/{userId}")
-    public Film deleteLike(
+    public void deleteLike(
             @PathVariable Long id,
             @PathVariable Long userId
     ) {
-        return filmService.deleteLike(id, userId);
+        filmService.deleteLike(id, userId);
     }
 
 }

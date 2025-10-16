@@ -1,25 +1,22 @@
-package ru.yandex.practicum.filmorate.service;
+package ru.yandex.practicum.filmorate.service.User;
 
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 
 public interface UserService {
 
-    User addFriend(Long userId, Long friendId);
+    boolean addFriend(Long userId, Long friendId);
 
     Collection<User> findFriends(Long userId);
 
-    User deleteFriend(Long userId, Long friendId);
+    boolean deleteFriend(Long userId, Long friendId);
 
     Collection<User> findCommonFriends(Long userId, Long otherId);
 
     Collection<User> findAll();
-
-    Map<Long, User> getMapUsers();
 
     Optional<User> findById(Long id);
 
